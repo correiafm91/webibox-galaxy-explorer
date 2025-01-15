@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Hand } from "lucide-react";
 
 const Index = () => {
   const [showGallery, setShowGallery] = useState(false);
@@ -65,8 +66,19 @@ const Index = () => {
         >
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-center gap-4 mb-8 text-white/80">
-              <p className="text-lg">Arraste para explorar os projetos</p>
-              <span className="animate-bounce">👆</span>
+              <p className="text-lg">Deslize horizontalmente para navegar</p>
+              <motion.div
+                animate={{
+                  x: [0, 10, 0],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <Hand size={24} className="text-white/80" />
+              </motion.div>
             </div>
             
             <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 -mx-4 px-4">
