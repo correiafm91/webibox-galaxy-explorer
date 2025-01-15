@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const Index = () => {
   const [showGallery, setShowGallery] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const projects = [
     {
@@ -74,6 +76,7 @@ const Index = () => {
                   className="relative min-w-[350px] cursor-pointer overflow-hidden rounded-lg bg-zinc-900 shadow-xl snap-start"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
+                  onClick={() => setSelectedImage(project.image)}
                 >
                   <img 
                     src={project.image}
@@ -93,6 +96,18 @@ const Index = () => {
           </div>
         </motion.section>
       )}
+
+      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="max-w-[90vw] max-h-[90vh] p-0">
+          {selectedImage && (
+            <img
+              src={selectedImage}
+              alt="Project preview"
+              className="w-full h-full object-contain"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </main>
   );
 };
