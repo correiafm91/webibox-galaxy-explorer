@@ -7,11 +7,317 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
-  </head>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: black;
+        color: white;
+        overflow-x: hidden;
+      }
+
+      .hero {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background-image: url('https://i.postimg.cc/3rcsSPnG/Captura-de-tela-2025-01-11-151228.png');
+        background-size: cover;
+        background-position: center;
+        transition: transform 1s ease;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .reveal-btn {
+        position: relative;
+        padding: 1.5rem 2rem;
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: black;
+        background-color: white;
+        border: none;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .reveal-btn:hover {
+        transform: scale(1.05);
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+
+      .gallery {
+        min-height: 100vh;
+        padding: 4rem 1rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .gallery.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .gallery-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .scroll-hint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .hand-icon {
+        animation: slideHorizontal 1.5s infinite ease-in-out;
+      }
+
+      @keyframes slideHorizontal {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(10px); }
+      }
+
+      .projects-container {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 2rem;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+      }
+
+      .project-card {
+        position: relative;
+        min-width: 350px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        transition: transform 0.3s ease;
+        scroll-snap-align: start;
+      }
+
+      .project-card:hover {
+        transform: scale(1.05);
+      }
+
+      .project-image {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+      }
+
+      .project-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .project-card:hover .project-overlay {
+        opacity: 1;
+      }
+
+      .project-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .project-description {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal.open {
+        display: flex;
+      }
+
+      .modal-content {
+        max-width: 90vw;
+        max-height: 90vh;
+      }
+
+      .modal-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .close-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
   <body>
-    <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <main>
+      <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <button class="reveal-btn">Ver projetos Webibox</button>
+      </section>
+
+      <section class="gallery" id="gallery">
+        <div class="gallery-container">
+          <div class="scroll-hint">
+            <p>Deslize horizontalmente para navegar</p>
+            <svg class="hand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+              <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+              <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+              <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+            </svg>
+          </div>
+
+          <div class="projects-container">
+            <div class="project-card" onclick="openModal('/lovable-uploads/35f6a41e-c865-4b1b-a995-84b96191e7c8.png')">
+              <img src="/lovable-uploads/35f6a41e-c865-4b1b-a995-84b96191e7c8.png" alt="Investidor Blindado" class="project-image">
+              <div class="project-overlay">
+                <h3 class="project-title">Investidor Blindado</h3>
+                <p class="project-description">Plataforma educacional para investimentos seguros</p>
+              </div>
+            </div>
+
+            <div class="project-card" onclick="openModal('/lovable-uploads/4a898c52-82e8-4997-b981-7646f0b6f1d4.png')">
+              <img src="/lovable-uploads/4a898c52-82e8-4997-b981-7646f0b6f1d4.png" alt="Além da Imagem" class="project-image">
+              <div class="project-overlay">
+                <h3 class="project-title">Além da Imagem</h3>
+                <p class="project-description">Curso de fotografia profissional</p>
+              </div>
+            </div>
+
+            <div class="project-card" onclick="openModal('/lovable-uploads/9063e202-ab38-4379-8b40-aac3a32dce39.png')">
+              <img src="/lovable-uploads/9063e202-ab38-4379-8b40-aac3a32dce39.png" alt="Crypto Platform" class="project-image">
+              <div class="project-overlay">
+                <h3 class="project-title">Crypto Platform</h3>
+                <p class="project-description">Plataforma de investimentos em criptomoedas</p>
+              </div>
+            </div>
+
+            <div class="project-card" onclick="openModal('/lovable-uploads/417e1f3f-b36d-4ed1-b328-f4269b136eab.png')">
+              <img src="/lovable-uploads/417e1f3f-b36d-4ed1-b328-f4269b136eab.png" alt="Insta Domination" class="project-image">
+              <div class="project-overlay">
+                <h3 class="project-title">Insta Domination</h3>
+                <p class="project-description">Curso de marketing digital para Instagram</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="modal" id="imageModal">
+        <button class="close-button" onclick="closeModal()">×</button>
+        <img class="modal-image" id="modalImage" src="" alt="Project preview">
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const hero = document.getElementById('hero');
+        const gallery = document.getElementById('gallery');
+        const revealBtn = document.querySelector('.reveal-btn');
+        const heroBg = document.querySelector('.hero-bg');
+
+        gallery.style.display = 'none';
+
+        revealBtn.addEventListener('click', function() {
+          heroBg.style.transform = 'scale(1.1)';
+          
+          setTimeout(() => {
+            hero.style.display = 'none';
+            gallery.style.display = 'block';
+            gallery.offsetHeight;
+            gallery.classList.add('visible');
+          }, 1000);
+        });
+
+        const projectsContainer = document.querySelector('.projects-container');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        projectsContainer.addEventListener('mousedown', (e) => {
+          isDown = true;
+          projectsContainer.style.cursor = 'grabbing';
+          startX = e.pageX - projectsContainer.offsetLeft;
+          scrollLeft = projectsContainer.scrollLeft;
+        });
+
+        projectsContainer.addEventListener('mouseleave', () => {
+          isDown = false;
+          projectsContainer.style.cursor = 'grab';
+        });
+
+        projectsContainer.addEventListener('mouseup', () => {
+          isDown = false;
+          projectsContainer.style.cursor = 'grab';
+        });
+
+        projectsContainer.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - projectsContainer.offsetLeft;
+          const walk = (x - startX) * 2;
+          projectsContainer.scrollLeft = scrollLeft - walk;
+        });
+      });
+
+      function openModal(imageSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageSrc;
+        modal.classList.add('open');
+      }
+
+      function closeModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('open');
+      }
+    </script>
   </body>
 </html>
